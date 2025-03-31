@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      source  = "terraform-providers/aws"
+      source  = "hashicorp/aws"
       version = "~> 5.93.0"
     }
 
@@ -10,14 +10,9 @@ terraform {
       version = "~> 1.19.0"
     }
 
-    helm = {
-      source  = "terraform-providers/helm"
-      version = "~> 2.17.0"
-    }
-
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "~> 2.33.0"
+      version = "~> 2.36.0"
     }
 
     flux = {
@@ -34,6 +29,13 @@ terraform {
       source  = "hashicorp/null"
       version = ">= 3.2.3"
     }
+  }
+
+  backend "s3" {
+    bucket       = "${var.project}-infra"
+    key          = "statefile"
+    region       = var.aws_region
+    use_lockfile = true
   }
 
   required_version = ">= 1.9.0"
